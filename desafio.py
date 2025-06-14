@@ -5,8 +5,7 @@ menu = """
   [e] Extrato
   [p] Parar
 
-  => 
-"""
+  => """
 saldo = 0
 limite = 500
 nSaques = 3
