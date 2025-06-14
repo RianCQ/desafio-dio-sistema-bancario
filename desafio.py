@@ -22,4 +22,15 @@ def deposito(saldo: float, valor: float, depositos: list):
         print("Valor inválido para depósito.")
     return saldo
 
+def saque(saldo, valor: float, saques: list):
+    if len(saques) < nSaques and valor <= limite :
+        if saldo > valor :
+            saldo = saldo - valor
+            saques.append(valor)
+            print("Saque realizado com sucesso.")
+        else :
+            print("Erro: Saldo insuficiente.")
+    else :
+        print("Erro: Saque negado.")
+    return saldo
 
