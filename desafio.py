@@ -53,3 +53,20 @@ def extrato(saldo: float, depositos, saques: list) -> None:
         print()
         print(f"> Saldo total: R${saldo:.2f}")
     print("###########################################")
+
+while True:
+    opcao = input(menu)
+
+    if opcao == 'd':
+        valor = float(input("Qual o valor de deposito? "))
+        saldo = deposito(saldo, valor, depositos)
+    elif opcao == 's':
+        valor = float(input("Qual o valor de saque? "))
+        saldo = saque(saldo, valor, saques)
+    elif opcao == 'e':
+        extrato(saldo, depositos, saques)
+    elif opcao == 'p':
+        print("Saindo do processo...")
+        break
+    else:
+        print("Erro: Operação inválida. Por favor, selecione novamente a operação desejada.")
