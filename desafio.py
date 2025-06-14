@@ -34,3 +34,22 @@ def saque(saldo, valor: float, saques: list):
         print("Erro: Saque negado.")
     return saldo
 
+def extrato(saldo: float, depositos, saques: list) -> None:
+    print("################ Extrato ##################")
+    if len(depositos) == 0 and len(saques) == 0:
+        print("Não foram realizadas movimentações.")
+    else :
+        indice = 0
+        print("> Depósitos: ")
+        while indice < len(depositos):
+            print(f"R${depositos[indice]:.2f}")
+            indice += 1
+        print()
+        indice = 0
+        print("> Saques: ")
+        while indice < len(saques):
+            print(f"R${saques[indice]:.2f}")
+            indice += 1
+        print()
+        print(f"> Saldo total: R${saldo:.2f}")
+    print("###########################################")
