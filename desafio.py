@@ -7,3 +7,8 @@ menu = """
 
   => 
 """
+saldo = 0
+limite = 500
+nSaques = 3
+depositos = []
+saques = []
