@@ -17,30 +17,34 @@ depositos = []
 #saques = []
 '''
 
-def deposito(saldo: float, valor: float, depositos: list):
+def depositar(saldo, valor, extrato, /):
     if valor > 0.0:
         saldo = saldo + valor
-        depositos.append(valor)
+        extrato += f"Depósito: R${valor:.2f}\n"
         print("Deposito realizado com sucesso.")
     else:
         print("Valor inválido para depósito.")
-    return saldo
+
+    return saldo, extrato
 
 def sacar(*, saldo, valor, extrato, limite, numero_saques, limite_saques):
-    if numero_saques < limite_saques :
-        if valor <= limite:
-            if saldo > valor :
-                saldo = saldo - valor
-                extrato += f"Saque: R${valor:.2f}\n"
-                numero_saques += 1
-                print("Saque realizado com sucesso.")
-            else :
-                print("Erro: Saldo insuficiente.")
+    if valor > 0:
+        if numero_saques < limite_saques :
+            if valor <= limite:
+                if saldo > valor :
+                    saldo = saldo - valor
+                    extrato += f"Saque: R${valor:.2f}\n"
+                    numero_saques += 1
+                    print("Saque realizado com sucesso.")
+                else :
+                    print("Erro: Saldo insuficiente.")
+            else:
+                print("Erro: Valor de saldo excede o limite de retirada.")
         else:
-            print("Erro: Valor de saldo excede o limite de retirada.")
+            print("Erro: Limite de saques diários atingido.")
     else:
-        print("Erro: Limite de saques diários atingido.")
-    return saldo
+        print("Erro: Valor de saque inválido.")
+    return saldo, extrato
 
 def extrato(saldo: float, depositos, saques: list) -> None:
     print("################ Extrato ##################")
@@ -64,7 +68,7 @@ def extrato(saldo: float, depositos, saques: list) -> None:
 
 def main():
     LIMITE_SAQUES = 3
-    AGENCIA = "0001"
+    #AGENCIA = "0001"
 
     saldo = 0
     limite = 500
@@ -78,10 +82,10 @@ def main():
 
         if opcao == 'd':
             valor = float(input("Qual o valor de deposito? "))
-            saldo = deposito(saldo, valor, depositos)
+            saldo, extrato = depositar(saldo, valor, extrato)
         elif opcao == 's':
             valor = float(input("Qual o valor de saque? "))
-            saldo = saque(saldo=saldo, valor=valor, saques=saques)
+            saldo, extrato = sacar(saldo=saldo, valor=valor, extrato=extrato, limite=limite, numero_saques=numero_saques, limite_saques=LIMITE_SAQUES)
         elif opcao == 'e':
             extrato(saldo, depositos, saques)
         elif opcao == 'p':
