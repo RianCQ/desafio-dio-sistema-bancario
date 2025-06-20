@@ -44,7 +44,7 @@ def sacar(*, saldo, valor, extrato, limite, numero_saques, limite_saques):
             print("Erro: Limite de saques diários atingido.")
     else:
         print("Erro: Valor de saque inválido.")
-    return saldo, extrato
+    return saldo, extrato, numero_saques
 
 def exibir_extrato(saldo, /, *, extrato) -> None:
     print("################ Extrato ##################")
@@ -55,6 +55,24 @@ def exibir_extrato(saldo, /, *, extrato) -> None:
         print()
         print(f"> Saldo total: R${saldo:.2f}")
     print("###########################################")
+
+def filtrar_usuario(usuarios, cpf):
+    for usuario in usuarios:
+        if usuario == cpf:
+            return True
+    return False
+
+def criar_usuario(usuarios):
+    cpf = input("Informe o CPF (somente com números): ")
+    if filtrar_usuario(usuarios, cpf):
+        print("O CPF já está inscrito.")
+        return
+    
+    nome = input("Informe o nome do usuário")
+    data_nasc = input("Informe a data de nascimento (formato: dd-mm-aaaa): ")
+    endereço = input("Endereço de usuário (logradouro, nro - bairro - cidade/sigla estado): ")
+    usuarios.append({cpf: {"nome": nome, "data de nascimento": data_nasc, "endereço": endereço}})
+    print("Usuário criado com sucesso.")
 
 def main():
     LIMITE_SAQUES = 3
@@ -75,7 +93,7 @@ def main():
             saldo, extrato = depositar(saldo, valor, extrato)
         elif opcao == 's':
             valor = float(input("Qual o valor de saque? "))
-            saldo, extrato = sacar(saldo=saldo, valor=valor, extrato=extrato, limite=limite, numero_saques=numero_saques, limite_saques=LIMITE_SAQUES)
+            saldo, extrato, numero_saques = sacar(saldo=saldo, valor=valor, extrato=extrato, limite=limite, numero_saques=numero_saques, limite_saques=LIMITE_SAQUES)
         elif opcao == 'e':
             exibir_extrato(saldo, extrato=extrato)
         elif opcao == 'p':
@@ -83,3 +101,5 @@ def main():
             break
         else:
             print("Erro: Operação inválida. Por favor, selecione novamente a operação desejada.")
+
+main()
