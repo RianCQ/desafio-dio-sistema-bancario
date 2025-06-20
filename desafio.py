@@ -46,22 +46,12 @@ def sacar(*, saldo, valor, extrato, limite, numero_saques, limite_saques):
         print("Erro: Valor de saque inválido.")
     return saldo, extrato
 
-def extrato(saldo: float, depositos, saques: list) -> None:
+def exibir_extrato(saldo, /, *, extrato) -> None:
     print("################ Extrato ##################")
-    if len(depositos) == 0 and len(saques) == 0:
+    if len(extrato) == 0:
         print("Não foram realizadas movimentações.")
     else :
-        indice = 0
-        print("> Depósitos: ")
-        while indice < len(depositos):
-            print(f"R${depositos[indice]:.2f}")
-            indice += 1
-        print()
-        indice = 0
-        print("> Saques: ")
-        while indice < len(saques):
-            print(f"R${saques[indice]:.2f}")
-            indice += 1
+        print(extrato)
         print()
         print(f"> Saldo total: R${saldo:.2f}")
     print("###########################################")
@@ -87,7 +77,7 @@ def main():
             valor = float(input("Qual o valor de saque? "))
             saldo, extrato = sacar(saldo=saldo, valor=valor, extrato=extrato, limite=limite, numero_saques=numero_saques, limite_saques=LIMITE_SAQUES)
         elif opcao == 'e':
-            extrato(saldo, depositos, saques)
+            exibir_extrato(saldo, extrato=extrato)
         elif opcao == 'p':
             print("Saindo do processo...")
             break
