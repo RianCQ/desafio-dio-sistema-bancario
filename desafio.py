@@ -5,17 +5,10 @@ menu = """
   [e] Extrato
   [nc] Nova conta
   [nu] Novo usuário
+  [lu] Lista usuários
   [p] Parar
 
   => """
-'''
-saldo = 0
-limite = 500
-limite_saques = 3
-numero_saques = 0
-depositos = []
-#saques = []
-'''
 
 def depositar(saldo, valor, extrato, /):
     if valor > 0.0:
@@ -58,25 +51,38 @@ def exibir_extrato(saldo, /, *, extrato) -> None:
 
 def filtrar_usuario(usuarios, cpf):
     for usuario in usuarios:
-        if usuario == cpf:
-            return True
+        if cpf in usuario:
+            return usuario
     return False
 
-def criar_usuario(usuarios):
-    cpf = input("Informe o CPF (somente com números): ")
-    if filtrar_usuario(usuarios, cpf):
-        print("O CPF já está inscrito.")
-        return
-    
-    nome = input("Informe o nome do usuário")
+def criar_usuario(usuarios, cpf):
+    nome = input("Informe o nome do usuário: ")
     data_nasc = input("Informe a data de nascimento (formato: dd-mm-aaaa): ")
-    endereço = input("Endereço de usuário (logradouro, nro - bairro - cidade/sigla estado): ")
+    endereço = input("Endereço de usuário (logradouro, nº - bairro - cidade - sigla estado): ")
     usuarios.append({cpf: {"nome": nome, "data de nascimento": data_nasc, "endereço": endereço}})
     print("Usuário criado com sucesso.")
 
+def criar_conta(agencia, usuario, contas):
+    conta_nova = {"agencia": agencia, "numero_conta": len(contas)+1, "usuario": usuario}
+    contas.append(conta_nova)
+    print("Conta feita com sucesso.")
+
+def lista_usuarios(usuarios):
+    for user in usuarios:
+        print(user)
+
+def lista_contas(contas):
+    for conta in contas:
+        print(f"""
+            ----------------------------------------
+            Nº Conta: {conta['numero_conta']}
+            Agência: {conta['agencia']}
+            Titular: {conta['usuario']['nome']}
+            ---------------------------------------
+        """)
 def main():
     LIMITE_SAQUES = 3
-    #AGENCIA = "0001"
+    AGENCIA = "1000"
 
     saldo = 0
     limite = 500
@@ -96,6 +102,22 @@ def main():
             saldo, extrato, numero_saques = sacar(saldo=saldo, valor=valor, extrato=extrato, limite=limite, numero_saques=numero_saques, limite_saques=LIMITE_SAQUES)
         elif opcao == 'e':
             exibir_extrato(saldo, extrato=extrato)
+        elif opcao == 'nu':
+            cpf = input("Informe o CPF (somente com números): ")
+            if filtrar_usuario(usuarios, cpf):
+                print("O CPF já está inscrito.")
+            else:
+                criar_usuario(usuarios, cpf)
+        elif opcao == 'nc':
+            cpf = input("Informe o CPF ligado a nova conta: ")
+            if filtrar_usuario(usuarios, cpf):
+                criar_conta(AGENCIA, cpf, contas)
+            else:
+                print("Usuário não detectado no sistema. Criação de conta não permitida.")
+        elif opcao == 'lu':
+            lista_usuarios(usuarios)
+        elif opcao == 'lc':
+            lista_contas(contas)
         elif opcao == 'p':
             print("Saindo do processo...")
             break
