@@ -52,7 +52,7 @@ def exibir_extrato(saldo, /, *, extrato) -> None:
 
 def filtrar_usuario(usuarios, cpf):
     if cpf in usuarios:
-        return usuarios[cpf]
+        return usuarios.get(cpf)
     return None
 
 def criar_usuario(usuarios, cpf):
