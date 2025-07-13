@@ -6,6 +6,7 @@ menu = """
   [nc] Nova conta
   [nu] Novo usuário
   [lu] Lista usuários
+  [lc] Lista contas
   [p] Parar
 
   => """
@@ -50,26 +51,25 @@ def exibir_extrato(saldo, /, *, extrato) -> None:
     print("###########################################")
 
 def filtrar_usuario(usuarios, cpf):
-    for usuario in usuarios:
-        if cpf in usuario:
-            return usuario
-    return False
+    if cpf in usuarios:
+        return usuarios[cpf]
+    return None
 
 def criar_usuario(usuarios, cpf):
     nome = input("Informe o nome do usuário: ")
     data_nasc = input("Informe a data de nascimento (formato: dd-mm-aaaa): ")
     endereço = input("Endereço de usuário (logradouro, nº - bairro - cidade - sigla estado): ")
-    usuarios.append({cpf: {"nome": nome, "data de nascimento": data_nasc, "endereço": endereço}})
+    usuarios.update({cpf: {"nome": nome, "data de nascimento": data_nasc, "endereço": endereço}})
     print("Usuário criado com sucesso.")
 
 def criar_conta(agencia, usuario, contas):
     conta_nova = {"agencia": agencia, "numero_conta": len(contas)+1, "usuario": usuario}
     contas.append(conta_nova)
-    print("Conta feita com sucesso.")
+    print("Conta criada com sucesso.")
 
 def lista_usuarios(usuarios):
     for user in usuarios:
-        print(user)
+        print(usuarios.get(user, {}))
 
 def lista_contas(contas):
     for conta in contas:
@@ -77,9 +77,10 @@ def lista_contas(contas):
             ----------------------------------------
             Nº Conta: {conta['numero_conta']}
             Agência: {conta['agencia']}
-            Titular: {conta['usuario']['nome']}
+            Titular: {conta['usuario'].get('nome', 'Nome não encontrado')}
             ---------------------------------------
         """)
+
 def main():
     LIMITE_SAQUES = 3
     AGENCIA = "1000"
@@ -88,7 +89,7 @@ def main():
     limite = 500
     extrato = ""
     numero_saques = 0
-    usuarios = []
+    usuarios = {}
     contas = []
 
     while True:
@@ -110,8 +111,9 @@ def main():
                 criar_usuario(usuarios, cpf)
         elif opcao == 'nc':
             cpf = input("Informe o CPF ligado a nova conta: ")
-            if filtrar_usuario(usuarios, cpf):
-                criar_conta(AGENCIA, cpf, contas)
+            user = filtrar_usuario(usuarios, cpf)
+            if user:
+                criar_conta(AGENCIA, user, contas)
             else:
                 print("Usuário não detectado no sistema. Criação de conta não permitida.")
         elif opcao == 'lu':
