@@ -1,6 +1,6 @@
 # 🏦 Sistema Bancário - Desafio DIO
 
-Um sistema bancário completo desenvolvido em Python como parte do BootCamp da Digital Innovation One (DIO). O projeto implementa operações bancárias essenciais com funcionalidades de gerenciamento de usuários e contas.
+Um sistema bancário desenvolvido em Python como parte do BootCamp da Digital Innovation One (DIO). O projeto implementa operações bancárias essenciais com funcionalidades de gerenciamento de usuários e contas.
 
 ## 📋 Descrição do Projeto
 
